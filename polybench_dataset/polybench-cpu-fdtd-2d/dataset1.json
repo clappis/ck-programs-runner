@@ -1,0 +1,7 @@
+{ "compiler_vars": 
+   {
+    "NX" :256,
+    "NY" : 256,
+    "TMAX": 5
+   }
+}

@@ -5,11 +5,11 @@ const stats = require("stats-lite")
 
 const programs = [
 "cbench-automotive-bitcount",
-"cbench-automotive-qsort1",
-"cbench-automotive-susan",
+"cbench-automotive-qsort1", 
+"cbench-automotive-susan", 
 "cbench-bzip2",
 "cbench-consumer-jpeg-c",
-"cbench-consumer-jpeg-d",
+"cbench-consumer-jpeg-d",  
 "cbench-consumer-tiff2bw",
 "cbench-consumer-tiff2dither",
 "cbench-consumer-tiff2median",
@@ -50,70 +50,321 @@ const programs = [
 "polybench-cpu-syrk",
 "polybench-cpu-2mm",
 "polybench-cpu-seidel-2d",
-"polybench-cpu-gemver",
-"milepost-codelet-mibench-office-ghostscript-src-gdevpbm-codelet-1-1", 
-"milepost-codelet-mibench-telecomm-adpcm-c-src-adpcm-codelet-1-1",
-"milepost-codelet-mibench-telecomm-fft-fftmisc-codelet-5-1",
-"milepost-codelet-mibench-office-rsynth-src-nsynth-codelet-5-1",
-"milepost-codelet-mibench-consumer-lame-src-newmdct-codelet-10-1",
-"milepost-codelet-mibench-automotive-basicmath-isqrt-codelet-1-1",
-"milepost-codelet-mibench-consumer-lame-src-fft-codelet-2-1",
-"milepost-codelet-mibench-consumer-tiffmedian-src-tiffmedian-codelet-3-1",
-"milepost-codelet-mibench-telecomm-fft-fourierf-codelet-3-1", 
-"milepost-codelet-mibench-security-pgp-d-src-mpilib-codelet-1-1",
-"milepost-codelet-mibench-consumer-tiffmedian-src-tiffmedian-codelet-4-1",
-"milepost-codelet-mibench-consumer-jpeg-c-src-jcdctmgr-codelet-13-1",
-"milepost-codelet-mibench-consumer-lame-src-takehiro-codelet-16-1",
-"milepost-codelet-mibench-consumer-tiffmedian-src-tiffmedian-codelet-1-1",
-"milepost-codelet-mibench-telecomm-gsm-src-rpe-codelet-4-1",
-"milepost-codelet-mibench-automotive-basicmath-cubic-codelet-3-1",
-"milepost-codelet-mibench-consumer-lame-src-quantize-pvt-codelet-6-1", 
-"milepost-codelet-mibench-consumer-tiff2rgba-src-tif-predict-codelet-4-1",
-"milepost-codelet-mibench-consumer-mad-src-layer3-codelet-5-1",
-"milepost-codelet-mibench-telecomm-gsm-src-short-term-codelet-2-1",
-"milepost-codelet-mibench-automotive-qsort1-src-qsort-codelet-1-1",
-"milepost-codelet-mibench-consumer-tiffmedian-src-tiffmedian-codelet-5-1",
-"milepost-codelet-mibench-consumer-lame-src-quantize-codelet-7-1",
-"milepost-codelet-mibench-consumer-tiffdither-src-tif-fax3-codelet-8-1",
-"milepost-codelet-mibench-consumer-tiffdither-src-tiffdither-codelet-1-1",
-"milepost-codelet-mibench-consumer-mad-src-layer3-codelet-6-1",
-"milepost-codelet-mibench-automotive-susan-s-src-susan-codelet-1-1",
-"milepost-codelet-mibench-security-pgp-e-src-mpilib-codelet-4-1",
-"milepost-codelet-mibench-consumer-tiffmedian-src-tiffmedian-codelet-6-1",
-"milepost-codelet-mibench-consumer-jpeg-c-src-jfdctint-codelet-2-1",
-"milepost-codelet-mibench-automotive-bitcount-src-bitcnts-codelet-1-1",
-"milepost-codelet-mibench-consumer-tiffdither-src-tif-fax3-codelet-9-1",
-"milepost-codelet-mibench-consumer-lame-src-takehiro-codelet-5-1",
-"milepost-codelet-mibench-automotive-susan-e-src-susan-codelet-10-1",
-"milepost-codelet-mibench-automotive-susan-e-src-susan-codelet-2-1",
-"milepost-codelet-mibench-security-pgp-e-src-mpilib-codelet-3-1",
-"milepost-codelet-mibench-consumer-jpeg-c-src-jchuff-codelet-9-1",
-"milepost-codelet-mibench-security-pgp-e-src-mpilib-codelet-1-1",
-"milepost-codelet-mibench-consumer-lame-src-psymodel-codelet-17-1",
-"milepost-codelet-mibench-network-dijkstra-src-dijkstra-large-codelet-5-1",
-"milepost-codelet-mibench-consumer-lame-src-newmdct-codelet-3-1",
-"milepost-codelet-mibench-telecomm-adpcm-d-src-adpcm-codelet-1-1"
-]
+"polybench-cpu-gemver", 
+] 
 
-const total_execution = 3;
+const total_execution = 10;
 const maxBuffer = 1024000;
 
-const inputs = [
-  { program : "cbench-automotive-susan", value: "--cmd_key=edges --dataset_uoa=image-pgm-0001", name: "edges"},
-  { program : "cbench-automotive-susan", value: "--cmd_key=corners --dataset_uoa=image-pgm-0001", name : "corners"},
-  { program : "cbench-automotive-susan", value: "--cmd_key=smoothing --dataset_uoa=image-pgm-0001", name : "smoothing"},
-  { program : "cbench-bzip2", value: "--cmd_key=decode", name : "decode"},
-  { program : "cbench-bzip2", value: "--cmd_key=encode --dataset_uoa=adpcm-0001", name : "encode"},
-  { program : "cbench-consumer-jpeg-c", value: "--dataset_uoa=image-ppm-0001"},
-  { program : "cbench-consumer-jpeg-d", value: "--dataset_uoa=image-jpeg-dnn-cat"},
-  { program : "cbench-office-stringsearch2", value: "--dataset_file=\"data.txt\" env.dataset_filename_1=data.txt"},
-  { program : "cbench-security-rijndael", value: "--cmd_key=encode --dataset_uoa=adpcm-0001", name : "encode"},
-  { program : "cbench-security-rijndael", value: "--cmd_key=decode", name : "decode"},
-  { program : "cbench-security-sha", value: "--dataset_uoa=adpcm-0001"},
-  { program : "cbench-telecom-crc32", value: "--dataset_uoa=adpcm-0001"}
-]
- 
+const skip_calibration = true;
+
+const datasets = [
+  { program : "cbench-automotive-bitcount", value: "--dataset_uoa=number-0001", name: "dataset1"},
+  { program : "cbench-automotive-bitcount", value: "--dataset_uoa=number-0002", name: "dataset2"},
+  { program : "cbench-automotive-bitcount", value: "--dataset_uoa=number-0003", name: "dataset3"},
+  { program : "cbench-automotive-bitcount", value: "--dataset_uoa=number-0004", name: "dataset4"},
+  { program : "cbench-automotive-bitcount", value: "--dataset_uoa=number-0005", name: "dataset5"}, 
+
+  { program : "cbench-automotive-susan", value: "--dataset_uoa=image-pgm-0001", name: "dataset1" , input: "edges"},
+  { program : "cbench-automotive-susan", value: "--dataset_uoa=image-pgm-0002", name: "dataset2", input: "edges"},
+  { program : "cbench-automotive-susan", value: "--dataset_uoa=image-pgm-0003", name: "dataset3" , input: "edges"},
+  { program : "cbench-automotive-susan", value: "--dataset_uoa=image-pgm-0004", name: "dataset4", input: "edges"},
+  { program : "cbench-automotive-susan", value: "--dataset_uoa=image-pgm-0005", name: "dataset5", input: "edges"},
   
+  { program : "cbench-automotive-susan", value: "--dataset_uoa=image-pgm-0001", name: "dataset1" , input: "corners"},
+  { program : "cbench-automotive-susan", value: "--dataset_uoa=image-pgm-0002", name: "dataset2", input: "corners"},
+  { program : "cbench-automotive-susan", value: "--dataset_uoa=image-pgm-0003", name: "dataset3" , input: "corners"},
+  { program : "cbench-automotive-susan", value: "--dataset_uoa=image-pgm-0004", name: "dataset4", input: "corners"},
+  { program : "cbench-automotive-susan", value: "--dataset_uoa=image-pgm-0005", name: "dataset5", input: "corners"},
+
+  { program : "cbench-automotive-susan", value: "--dataset_uoa=image-pgm-0001", name: "dataset1" , input: "smoothing"},
+  { program : "cbench-automotive-susan", value: "--dataset_uoa=image-pgm-0002", name: "dataset2", input: "smoothing"},
+  { program : "cbench-automotive-susan", value: "--dataset_uoa=image-pgm-0003", name: "dataset3" , input: "smoothing"},
+  { program : "cbench-automotive-susan", value: "--dataset_uoa=image-pgm-0004", name: "dataset4", input: "smoothing"},
+  { program : "cbench-automotive-susan", value: "--dataset_uoa=image-pgm-0005", name: "dataset5", input: "smoothing"},
+
+  { program : "cbench-bzip2", value: "--dataset_uoa=bzip2-0001", name: "dataset1" , input: "decode"},
+  { program : "cbench-bzip2", value: "--dataset_uoa=bzip2-0002", name: "dataset2" , input: "decode"},
+  { program : "cbench-bzip2", value: "--dataset_uoa=bzip2-0003", name: "dataset3" , input: "decode"},
+  { program : "cbench-bzip2", value: "--dataset_uoa=bzip2-0004", name: "dataset4" , input: "decode"},
+  { program : "cbench-bzip2", value: "--dataset_uoa=bzip2-0005", name: "dataset5" , input: "decode"},
+
+  { program : "cbench-bzip2", value: "--dataset_file=\"data.txt\" env.dataset_filename_1=data.txt --dataset_uoa=txt-0001", name: "dataset1" , input: "encode"},
+  { program : "cbench-bzip2", value: "--dataset_file=\"data.txt\" env.dataset_filename_1=data.txt --dataset_uoa=txt-0002", name: "dataset2" , input: "encode"},
+  { program : "cbench-bzip2", value: "--dataset_file=\"data.txt\" env.dataset_filename_1=data.txt --dataset_uoa=txt-0003", name: "dataset3" , input: "encode"},
+  { program : "cbench-bzip2", value: "--dataset_file=\"data.txt\" env.dataset_filename_1=data.txt --dataset_uoa=txt-0004", name: "dataset4" , input: "encode"},
+  { program : "cbench-bzip2", value: "--dataset_file=\"data.txt\" env.dataset_filename_1=data.txt --dataset_uoa=txt-0005", name: "dataset5" , input: "encode"}, 
+
+
+  { program : "cbench-consumer-jpeg-c", value: "--dataset_uoa=image-ppm-0001", name: "dataset1"},
+  { program : "cbench-consumer-jpeg-c", value: "--dataset_uoa=image-ppm-0002", name: "dataset2"},
+  { program : "cbench-consumer-jpeg-c", value: "--dataset_uoa=image-ppm-0003", name: "dataset3"},
+  { program : "cbench-consumer-jpeg-c", value: "--dataset_uoa=image-ppm-0004", name: "dataset4"},
+  { program : "cbench-consumer-jpeg-c", value: "--dataset_uoa=image-ppm-0005", name: "dataset5"},
+
+  { program : "cbench-consumer-jpeg-d", value: "--dataset_uoa=image-jpeg-0001", name: "dataset1"},
+  { program : "cbench-consumer-jpeg-d", value: "--dataset_uoa=image-jpeg-0002", name: "dataset2"},
+  { program : "cbench-consumer-jpeg-d", value: "--dataset_uoa=image-jpeg-0003", name: "dataset3"},
+  { program : "cbench-consumer-jpeg-d", value: "--dataset_uoa=image-jpeg-0004", name: "dataset4"},
+  { program : "cbench-consumer-jpeg-d", value: "--dataset_uoa=image-jpeg-0005", name: "dataset5"},
+
+  { program : "cbench-consumer-tiff2bw", value: "--dataset_uoa=image-tiff-0001", name: "dataset1"},
+  { program : "cbench-consumer-tiff2bw", value: "--dataset_uoa=image-tiff-0002", name: "dataset2"},
+  { program : "cbench-consumer-tiff2bw", value: "--dataset_uoa=image-tiff-0003", name: "dataset3"},
+  { program : "cbench-consumer-tiff2bw", value: "--dataset_uoa=image-tiff-0004", name: "dataset4"},
+  { program : "cbench-consumer-tiff2bw", value: "--dataset_uoa=image-tiff-0005", name: "dataset5"},
+  
+  { program : "cbench-consumer-tiff2dither", value: "--dataset_uoa=image-tiff-0001-bw", name: "dataset1"},
+  { program : "cbench-consumer-tiff2dither", value: "--dataset_uoa=image-tiff-0002-bw", name: "dataset2"},
+  { program : "cbench-consumer-tiff2dither", value: "--dataset_uoa=image-tiff-0003-bw", name: "dataset3"},
+  { program : "cbench-consumer-tiff2dither", value: "--dataset_uoa=image-tiff-0004-bw", name: "dataset4"},
+  { program : "cbench-consumer-tiff2dither", value: "--dataset_uoa=image-tiff-0005-bw", name: "dataset5"},
+
+  { program : "cbench-consumer-tiff2median", value: "--dataset_uoa=image-tiff-0001-bw", name: "dataset1"},
+  { program : "cbench-consumer-tiff2median", value: "--dataset_uoa=image-tiff-0002-bw", name: "dataset2"},
+  { program : "cbench-consumer-tiff2median", value: "--dataset_uoa=image-tiff-0003-bw", name: "dataset3"},
+  { program : "cbench-consumer-tiff2median", value: "--dataset_uoa=image-tiff-0004-bw", name: "dataset4"},
+  { program : "cbench-consumer-tiff2median", value: "--dataset_uoa=image-tiff-0005-bw", name: "dataset5"},
+
+  { program : "cbench-consumer-tiff2rgba", value: "--dataset_uoa=image-tiff-0001", name: "dataset1"},
+  { program : "cbench-consumer-tiff2rgba", value: "--dataset_uoa=image-tiff-0002", name: "dataset2"},
+  { program : "cbench-consumer-tiff2rgba", value: "--dataset_uoa=image-tiff-0003", name: "dataset3"},
+  { program : "cbench-consumer-tiff2rgba", value: "--dataset_uoa=image-tiff-0004", name: "dataset4"},
+  { program : "cbench-consumer-tiff2rgba", value: "--dataset_uoa=image-tiff-0005", name: "dataset5"},
+  
+  { program : "cbench-network-dijkstra", value: "--dataset_uoa=cdataset-dijkstra-0001", name: "dataset1"},
+  { program : "cbench-network-dijkstra", value: "--dataset_uoa=cdataset-dijkstra-0002", name: "dataset2"},
+  { program : "cbench-network-dijkstra", value: "--dataset_uoa=cdataset-dijkstra-0003", name: "dataset3"},
+  { program : "cbench-network-dijkstra", value: "--dataset_uoa=cdataset-dijkstra-0004", name: "dataset4"},
+  { program : "cbench-network-dijkstra", value: "--dataset_uoa=cdataset-dijkstra-0005", name: "dataset5"},
+
+  { program : "cbench-network-patricia", value: "--dataset_uoa=cdataset-patricia-0001", name: "dataset1"},
+  { program : "cbench-network-patricia", value: "--dataset_uoa=cdataset-patricia-0002", name: "dataset2"},
+  { program : "cbench-network-patricia", value: "--dataset_uoa=cdataset-patricia-0003", name: "dataset3"},
+  { program : "cbench-network-patricia", value: "--dataset_uoa=cdataset-patricia-0004", name: "dataset4"},
+  { program : "cbench-network-patricia", value: "--dataset_uoa=cdataset-patricia-0005", name: "dataset5"},
+
+
+  { program : "cbench-office-stringsearch2", value: "--dataset_file=\"data.txt\" env.dataset_filename_1=data.txt --dataset_uoa=txt-0001", name: "dataset1"},
+  { program : "cbench-office-stringsearch2", value: "--dataset_file=\"data.txt\" env.dataset_filename_1=data.txt --dataset_uoa=txt-0002", name: "dataset2"},
+  { program : "cbench-office-stringsearch2", value: "--dataset_file=\"data.txt\" env.dataset_filename_1=data.txt --dataset_uoa=txt-0003", name: "dataset3"},
+  { program : "cbench-office-stringsearch2", value: "--dataset_file=\"data.txt\" env.dataset_filename_1=data.txt --dataset_uoa=txt-0007", name: "dataset4"},
+  { program : "cbench-office-stringsearch2", value: "--dataset_file=\"data.txt\" env.dataset_filename_1=data.txt --dataset_uoa=txt-0005", name: "dataset5"},
+
+  { program : "cbench-security-rijndael", value: "--dataset_uoa=enc-0001", name: "dataset1", input: "decode"},
+  { program : "cbench-security-rijndael", value: "--dataset_uoa=enc-0002", name: "dataset2", input: "decode"},
+  { program : "cbench-security-rijndael", value: "--dataset_uoa=enc-0003", name: "dataset3", input: "decode"},
+  { program : "cbench-security-rijndael", value: "--dataset_uoa=enc-0004", name: "dataset4", input: "decode"},
+  { program : "cbench-security-rijndael", value: "--dataset_uoa=enc-0005", name: "dataset5", input: "decode"},
+
+  { program : "cbench-security-rijndael", value: "--dataset_uoa=enc-0001", name: "dataset1", input: "encode"},
+  { program : "cbench-security-rijndael", value: "--dataset_uoa=enc-0002", name: "dataset2", input: "encode"},
+  { program : "cbench-security-rijndael", value: "--dataset_uoa=enc-0003", name: "dataset3", input: "encode"},
+  { program : "cbench-security-rijndael", value: "--dataset_uoa=enc-0004", name: "dataset4", input: "encode"},
+  { program : "cbench-security-rijndael", value: "--dataset_uoa=enc-0005", name: "dataset5", input: "encode"},
+
+  { program : "cbench-security-sha", value: "--dataset_uoa=adpcm-0001", name: "dataset1"},
+  { program : "cbench-security-sha", value: "--dataset_uoa=adpcm-0002", name: "dataset2"},
+  { program : "cbench-security-sha", value: "--dataset_uoa=adpcm-0003", name: "dataset3"},
+  { program : "cbench-security-sha", value: "--dataset_uoa=adpcm-0007", name: "dataset4"},
+  { program : "cbench-security-sha", value: "--dataset_uoa=adpcm-0005", name: "dataset5"},
+
+  { program : "cbench-telecom-adpcm-c", value: "--dataset_uoa=pcm-0001", name: "dataset1"},
+  { program : "cbench-telecom-adpcm-c", value: "--dataset_uoa=pcm-0002", name: "dataset2"},
+  { program : "cbench-telecom-adpcm-c", value: "--dataset_uoa=pcm-0003", name: "dataset3"},
+  { program : "cbench-telecom-adpcm-c", value: "--dataset_uoa=pcm-0004", name: "dataset4"},
+  { program : "cbench-telecom-adpcm-c", value: "--dataset_uoa=pcm-0005", name: "dataset5"},
+
+  { program : "cbench-telecom-adpcm-d", value: "--dataset_uoa=adpcm-0001", name: "dataset1"},
+  { program : "cbench-telecom-adpcm-d", value: "--dataset_uoa=adpcm-0002", name: "dataset2"},
+  { program : "cbench-telecom-adpcm-d", value: "--dataset_uoa=adpcm-0003", name: "dataset3"},
+  { program : "cbench-telecom-adpcm-d", value: "--dataset_uoa=adpcm-0004", name: "dataset4"},
+  { program : "cbench-telecom-adpcm-d", value: "--dataset_uoa=adpcm-0005", name: "dataset5"},
+
+  { program : "cbench-telecom-crc32", value: "--dataset_uoa=adpcm-0001", name: "dataset1"},
+  { program : "cbench-telecom-crc32", value: "--dataset_uoa=adpcm-0002", name: "dataset2"},
+  { program : "cbench-telecom-crc32", value: "--dataset_uoa=adpcm-0003", name: "dataset3"},
+  { program : "cbench-telecom-crc32", value: "--dataset_uoa=adpcm-0004", name: "dataset4"},
+  { program : "cbench-telecom-crc32", value: "--dataset_uoa=adpcm-0005", name: "dataset5"},
+
+  { program : "cbench-telecom-gsm", value: "--dataset_uoa=au-0001", name: "dataset1"},
+  { program : "cbench-telecom-gsm", value: "--dataset_uoa=au-0002", name: "dataset2"},
+  { program : "cbench-telecom-gsm", value: "--dataset_uoa=au-0003", name: "dataset3"},
+  { program : "cbench-telecom-gsm", value: "--dataset_uoa=au-0004", name: "dataset4"},
+  { program : "cbench-telecom-gsm", value: "--dataset_uoa=au-0005", name: "dataset5"},
+
+  { program : "polybench-cpu-3mm", compilation : true, value: "@polybench_dataset/polybench-cpu-3mm/dataset1.json", name: "dataset1"},
+  { program : "polybench-cpu-3mm", compilation : true, value: "@polybench_dataset/polybench-cpu-3mm/dataset2.json", name: "dataset2"},
+  { program : "polybench-cpu-3mm", compilation : true, value: "@polybench_dataset/polybench-cpu-3mm/dataset3.json", name: "dataset3"},
+  { program : "polybench-cpu-3mm", compilation : true, value: "@polybench_dataset/polybench-cpu-3mm/dataset4.json", name: "dataset4"},
+  { program : "polybench-cpu-3mm", compilation : true, value: "@polybench_dataset/polybench-cpu-3mm/dataset5.json", name: "dataset5"},
+
+  { program : "polybench-cpu-trmm", compilation : true, value: "@polybench_dataset/polybench-cpu-trmm/dataset1.json", name: "dataset1"},
+  { program : "polybench-cpu-trmm", compilation : true, value: "@polybench_dataset/polybench-cpu-trmm/dataset2.json", name: "dataset2"},
+  { program : "polybench-cpu-trmm", compilation : true, value: "@polybench_dataset/polybench-cpu-trmm/dataset3.json", name: "dataset3"},
+  { program : "polybench-cpu-trmm", compilation : true, value: "@polybench_dataset/polybench-cpu-trmm/dataset4.json", name: "dataset4"},
+  { program : "polybench-cpu-trmm", compilation : true, value: "@polybench_dataset/polybench-cpu-trmm/dataset5.json", name: "dataset5"},
+
+  { program : "polybench-cpu-lu", compilation : true, value: "@polybench_dataset/polybench-cpu-lu/dataset1.json", name: "dataset1"},
+  { program : "polybench-cpu-lu", compilation : true, value: "@polybench_dataset/polybench-cpu-lu/dataset2.json", name: "dataset2"},
+  { program : "polybench-cpu-lu", compilation : true, value: "@polybench_dataset/polybench-cpu-lu/dataset3.json", name: "dataset3"},
+  { program : "polybench-cpu-lu", compilation : true, value: "@polybench_dataset/polybench-cpu-lu/dataset4.json", name: "dataset4"},
+  { program : "polybench-cpu-lu", compilation : true, value: "@polybench_dataset/polybench-cpu-lu/dataset5.json", name: "dataset5"},
+
+  { program : "polybench-cpu-doitgen", compilation : true, value: "@polybench_dataset/polybench-cpu-doitgen/dataset1.json", name: "dataset1"},
+  { program : "polybench-cpu-doitgen", compilation : true, value: "@polybench_dataset/polybench-cpu-doitgen/dataset2.json", name: "dataset2"},
+  { program : "polybench-cpu-doitgen", compilation : true, value: "@polybench_dataset/polybench-cpu-doitgen/dataset3.json", name: "dataset3"},
+  { program : "polybench-cpu-doitgen", compilation : true, value: "@polybench_dataset/polybench-cpu-doitgen/dataset4.json", name: "dataset4"},
+  { program : "polybench-cpu-doitgen", compilation : true, value: "@polybench_dataset/polybench-cpu-doitgen/dataset5.json", name: "dataset5"},
+
+  { program : "polybench-cpu-jacobi-2d-imper", compilation : true, value: "@polybench_dataset/polybench-cpu-jacobi-2d-imper/dataset1.json", name: "dataset1"},
+  { program : "polybench-cpu-jacobi-2d-imper", compilation : true, value: "@polybench_dataset/polybench-cpu-jacobi-2d-imper/dataset2.json", name: "dataset2"},
+  { program : "polybench-cpu-jacobi-2d-imper", compilation : true, value: "@polybench_dataset/polybench-cpu-jacobi-2d-imper/dataset3.json", name: "dataset3"},
+  { program : "polybench-cpu-jacobi-2d-imper", compilation : true, value: "@polybench_dataset/polybench-cpu-jacobi-2d-imper/dataset4.json", name: "dataset4"},
+  { program : "polybench-cpu-jacobi-2d-imper", compilation : true, value: "@polybench_dataset/polybench-cpu-jacobi-2d-imper/dataset5.json", name: "dataset5"},
+  
+  { program : "polybench-cpu-fdtd-2d", compilation : true, value: "@polybench_dataset/polybench-cpu-fdtd-2d/dataset1.json", name: "dataset1"},
+  { program : "polybench-cpu-fdtd-2d", compilation : true, value: "@polybench_dataset/polybench-cpu-fdtd-2d/dataset2.json", name: "dataset2"},
+  { program : "polybench-cpu-fdtd-2d", compilation : true, value: "@polybench_dataset/polybench-cpu-fdtd-2d/dataset3.json", name: "dataset3"},
+  { program : "polybench-cpu-fdtd-2d", compilation : true, value: "@polybench_dataset/polybench-cpu-fdtd-2d/dataset4.json", name: "dataset4"},
+  { program : "polybench-cpu-fdtd-2d", compilation : true, value: "@polybench_dataset/polybench-cpu-fdtd-2d/dataset5.json", name: "dataset5"},
+
+  { program : "polybench-cpu-symm", compilation : true, value: "@polybench_dataset/polybench-cpu-symm/dataset1.json", name: "dataset1"},
+  { program : "polybench-cpu-symm", compilation : true, value: "@polybench_dataset/polybench-cpu-symm/dataset2.json", name: "dataset2"},
+  { program : "polybench-cpu-symm", compilation : true, value: "@polybench_dataset/polybench-cpu-symm/dataset3.json", name: "dataset3"},
+  { program : "polybench-cpu-symm", compilation : true, value: "@polybench_dataset/polybench-cpu-symm/dataset4.json", name: "dataset4"},
+  { program : "polybench-cpu-symm", compilation : true, value: "@polybench_dataset/polybench-cpu-symm/dataset5.json", name: "dataset5"},
+
+  { program : "polybench-cpu-atax", compilation : true, value: "@polybench_dataset/polybench-cpu-atax/dataset1.json", name: "dataset1"},
+  { program : "polybench-cpu-atax", compilation : true, value: "@polybench_dataset/polybench-cpu-atax/dataset2.json", name: "dataset2"},
+  { program : "polybench-cpu-atax", compilation : true, value: "@polybench_dataset/polybench-cpu-atax/dataset3.json", name: "dataset3"},
+  { program : "polybench-cpu-atax", compilation : true, value: "@polybench_dataset/polybench-cpu-atax/dataset4.json", name: "dataset4"},
+  { program : "polybench-cpu-atax", compilation : true, value: "@polybench_dataset/polybench-cpu-atax/dataset5.json", name: "dataset5"},
+
+  { program : "polybench-cpu-bicg", compilation : true, value: "@polybench_dataset/polybench-cpu-bicg/dataset1.json", name: "dataset1"},
+  { program : "polybench-cpu-bicg", compilation : true, value: "@polybench_dataset/polybench-cpu-bicg/dataset2.json", name: "dataset2"},
+  { program : "polybench-cpu-bicg", compilation : true, value: "@polybench_dataset/polybench-cpu-bicg/dataset3.json", name: "dataset3"},
+  { program : "polybench-cpu-bicg", compilation : true, value: "@polybench_dataset/polybench-cpu-bicg/dataset4.json", name: "dataset4"},
+  { program : "polybench-cpu-bicg", compilation : true, value: "@polybench_dataset/polybench-cpu-bicg/dataset5.json", name: "dataset5"},
+
+  { program : "polybench-cpu-adi", compilation : true, value: "@polybench_dataset/polybench-cpu-adi/dataset1.json", name: "dataset1"},
+  { program : "polybench-cpu-adi", compilation : true, value: "@polybench_dataset/polybench-cpu-adi/dataset2.json", name: "dataset2"},
+  { program : "polybench-cpu-adi", compilation : true, value: "@polybench_dataset/polybench-cpu-adi/dataset3.json", name: "dataset3"},
+  { program : "polybench-cpu-adi", compilation : true, value: "@polybench_dataset/polybench-cpu-adi/dataset4.json", name: "dataset4"},
+  { program : "polybench-cpu-adi", compilation : true, value: "@polybench_dataset/polybench-cpu-adi/dataset5.json", name: "dataset5"},
+
+  { program : "polybench-cpu-gemm", compilation : true, value: "@polybench_dataset/polybench-cpu-gemm/dataset1.json", name: "dataset1"},
+  { program : "polybench-cpu-gemm", compilation : true, value: "@polybench_dataset/polybench-cpu-gemm/dataset2.json", name: "dataset2"},
+  { program : "polybench-cpu-gemm", compilation : true, value: "@polybench_dataset/polybench-cpu-gemm/dataset3.json", name: "dataset3"},
+  { program : "polybench-cpu-gemm", compilation : true, value: "@polybench_dataset/polybench-cpu-gemm/dataset4.json", name: "dataset4"},
+  { program : "polybench-cpu-gemm", compilation : true, value: "@polybench_dataset/polybench-cpu-gemm/dataset5.json", name: "dataset5"},
+
+  { program : "polybench-cpu-jacobi-1d-imper", compilation : true, value: "@polybench_dataset/polybench-cpu-jacobi-1d-imper/dataset1.json", name: "dataset1"},
+  { program : "polybench-cpu-jacobi-1d-imper", compilation : true, value: "@polybench_dataset/polybench-cpu-jacobi-1d-imper/dataset2.json", name: "dataset2"},
+  { program : "polybench-cpu-jacobi-1d-imper", compilation : true, value: "@polybench_dataset/polybench-cpu-jacobi-1d-imper/dataset3.json", name: "dataset3"},
+  { program : "polybench-cpu-jacobi-1d-imper", compilation : true, value: "@polybench_dataset/polybench-cpu-jacobi-1d-imper/dataset4.json", name: "dataset4"},
+  { program : "polybench-cpu-jacobi-1d-imper", compilation : true, value: "@polybench_dataset/polybench-cpu-jacobi-1d-imper/dataset5.json", name: "dataset5"},
+
+  { program : "polybench-cpu-gramschmidt", compilation : true, value: "@polybench_dataset/polybench-cpu-gramschmidt/dataset1.json", name: "dataset1"},
+  { program : "polybench-cpu-gramschmidt", compilation : true, value: "@polybench_dataset/polybench-cpu-gramschmidt/dataset2.json", name: "dataset2"},
+  { program : "polybench-cpu-gramschmidt", compilation : true, value: "@polybench_dataset/polybench-cpu-gramschmidt/dataset3.json", name: "dataset3"},
+  { program : "polybench-cpu-gramschmidt", compilation : true, value: "@polybench_dataset/polybench-cpu-gramschmidt/dataset4.json", name: "dataset4"},
+  { program : "polybench-cpu-gramschmidt", compilation : true, value: "@polybench_dataset/polybench-cpu-gramschmidt/dataset5.json", name: "dataset5"},
+
+  { program : "polybench-cpu-fdtd-apml", compilation : true, value: "@polybench_dataset/polybench-cpu-fdtd-apml/dataset1.json", name: "dataset1"},
+  { program : "polybench-cpu-fdtd-apml", compilation : true, value: "@polybench_dataset/polybench-cpu-fdtd-apml/dataset2.json", name: "dataset2"},
+  { program : "polybench-cpu-fdtd-apml", compilation : true, value: "@polybench_dataset/polybench-cpu-fdtd-apml/dataset3.json", name: "dataset3"},
+  { program : "polybench-cpu-fdtd-apml", compilation : true, value: "@polybench_dataset/polybench-cpu-fdtd-apml/dataset4.json", name: "dataset4"},
+  { program : "polybench-cpu-fdtd-apml", compilation : true, value: "@polybench_dataset/polybench-cpu-fdtd-apml/dataset5.json", name: "dataset5"},
+
+  { program : "polybench-cpu-ludcmp", compilation : true, value: "@polybench_dataset/polybench-cpu-ludcmp/dataset1.json", name: "dataset1"},
+  { program : "polybench-cpu-ludcmp", compilation : true, value: "@polybench_dataset/polybench-cpu-ludcmp/dataset2.json", name: "dataset2"},
+  { program : "polybench-cpu-ludcmp", compilation : true, value: "@polybench_dataset/polybench-cpu-ludcmp/dataset3.json", name: "dataset3"},
+  { program : "polybench-cpu-ludcmp", compilation : true, value: "@polybench_dataset/polybench-cpu-ludcmp/dataset4.json", name: "dataset4"},
+  { program : "polybench-cpu-ludcmp", compilation : true, value: "@polybench_dataset/polybench-cpu-ludcmp/dataset5.json", name: "dataset5"},
+
+  { program : "polybench-cpu-trisolv", compilation : true, value: "@polybench_dataset/polybench-cpu-trisolv/dataset1.json", name: "dataset1"},
+  { program : "polybench-cpu-trisolv", compilation : true, value: "@polybench_dataset/polybench-cpu-trisolv/dataset2.json", name: "dataset2"},
+  { program : "polybench-cpu-trisolv", compilation : true, value: "@polybench_dataset/polybench-cpu-trisolv/dataset3.json", name: "dataset3"},
+  { program : "polybench-cpu-trisolv", compilation : true, value: "@polybench_dataset/polybench-cpu-trisolv/dataset4.json", name: "dataset4"},
+  { program : "polybench-cpu-trisolv", compilation : true, value: "@polybench_dataset/polybench-cpu-trisolv/dataset5.json", name: "dataset5"},
+
+  { program : "polybench-cpu-gesummv", compilation : true, value: "@polybench_dataset/polybench-cpu-gesummv/dataset1.json", name: "dataset1"},
+  { program : "polybench-cpu-gesummv", compilation : true, value: "@polybench_dataset/polybench-cpu-gesummv/dataset2.json", name: "dataset2"},
+  { program : "polybench-cpu-gesummv", compilation : true, value: "@polybench_dataset/polybench-cpu-gesummv/dataset3.json", name: "dataset3"},
+  { program : "polybench-cpu-gesummv", compilation : true, value: "@polybench_dataset/polybench-cpu-gesummv/dataset4.json", name: "dataset4"},
+  { program : "polybench-cpu-gesummv", compilation : true, value: "@polybench_dataset/polybench-cpu-gesummv/dataset5.json", name: "dataset5"},
+
+  { program : "polybench-cpu-mvt", compilation : true, value: "@polybench_dataset/polybench-cpu-mvt/dataset1.json", name: "dataset1"},
+  { program : "polybench-cpu-mvt", compilation : true, value: "@polybench_dataset/polybench-cpu-mvt/dataset2.json", name: "dataset2"},
+  { program : "polybench-cpu-mvt", compilation : true, value: "@polybench_dataset/polybench-cpu-mvt/dataset3.json", name: "dataset3"},
+  { program : "polybench-cpu-mvt", compilation : true, value: "@polybench_dataset/polybench-cpu-mvt/dataset4.json", name: "dataset4"},
+  { program : "polybench-cpu-mvt", compilation : true, value: "@polybench_dataset/polybench-cpu-mvt/dataset5.json", name: "dataset5"},
+
+  { program : "polybench-cpu-syr2k", compilation : true, value: "@polybench_dataset/polybench-cpu-syr2k/dataset1.json", name: "dataset1"},
+  { program : "polybench-cpu-syr2k", compilation : true, value: "@polybench_dataset/polybench-cpu-syr2k/dataset2.json", name: "dataset2"},
+  { program : "polybench-cpu-syr2k", compilation : true, value: "@polybench_dataset/polybench-cpu-syr2k/dataset3.json", name: "dataset3"},
+  { program : "polybench-cpu-syr2k", compilation : true, value: "@polybench_dataset/polybench-cpu-syr2k/dataset4.json", name: "dataset4"},
+  { program : "polybench-cpu-syr2k", compilation : true, value: "@polybench_dataset/polybench-cpu-syr2k/dataset5.json", name: "dataset5"},
+
+  { program : "polybench-cpu-cholesky", compilation : true, value: "@polybench_dataset/polybench-cpu-cholesky/dataset1.json", name: "dataset1"},
+  { program : "polybench-cpu-cholesky", compilation : true, value: "@polybench_dataset/polybench-cpu-cholesky/dataset2.json", name: "dataset2"},
+  { program : "polybench-cpu-cholesky", compilation : true, value: "@polybench_dataset/polybench-cpu-cholesky/dataset3.json", name: "dataset3"},
+  { program : "polybench-cpu-cholesky", compilation : true, value: "@polybench_dataset/polybench-cpu-cholesky/dataset4.json", name: "dataset4"},
+  { program : "polybench-cpu-cholesky", compilation : true, value: "@polybench_dataset/polybench-cpu-cholesky/dataset5.json", name: "dataset5"},
+
+  { program : "polybench-cpu-dynprog", compilation : true, value: "@polybench_dataset/polybench-cpu-dynprog/dataset1.json", name: "dataset1"},
+  { program : "polybench-cpu-dynprog", compilation : true, value: "@polybench_dataset/polybench-cpu-dynprog/dataset2.json", name: "dataset2"},
+  { program : "polybench-cpu-dynprog", compilation : true, value: "@polybench_dataset/polybench-cpu-dynprog/dataset3.json", name: "dataset3"},
+  { program : "polybench-cpu-dynprog", compilation : true, value: "@polybench_dataset/polybench-cpu-dynprog/dataset4.json", name: "dataset4"},
+  { program : "polybench-cpu-dynprog", compilation : true, value: "@polybench_dataset/polybench-cpu-dynprog/dataset5.json", name: "dataset5"},
+
+  { program : "polybench-cpu-medley-reg-detect", compilation : true, value: "@polybench_dataset/polybench-cpu-medley-reg-detect/dataset1.json", name: "dataset1"},
+  { program : "polybench-cpu-medley-reg-detect", compilation : true, value: "@polybench_dataset/polybench-cpu-medley-reg-detect/dataset2.json", name: "dataset2"},
+  { program : "polybench-cpu-medley-reg-detect", compilation : true, value: "@polybench_dataset/polybench-cpu-medley-reg-detect/dataset3.json", name: "dataset3"},
+  { program : "polybench-cpu-medley-reg-detect", compilation : true, value: "@polybench_dataset/polybench-cpu-medley-reg-detect/dataset4.json", name: "dataset4"},
+  { program : "polybench-cpu-medley-reg-detect", compilation : true, value: "@polybench_dataset/polybench-cpu-medley-reg-detect/dataset5.json", name: "dataset5"},
+
+  { program : "polybench-cpu-medley-floyd-warshall", compilation : true, value: "@polybench_dataset/polybench-cpu-medley-floyd-warshall/dataset1.json", name: "dataset1"},
+  { program : "polybench-cpu-medley-floyd-warshall", compilation : true, value: "@polybench_dataset/polybench-cpu-medley-floyd-warshall/dataset2.json", name: "dataset2"},
+  { program : "polybench-cpu-medley-floyd-warshall", compilation : true, value: "@polybench_dataset/polybench-cpu-medley-floyd-warshall/dataset3.json", name: "dataset3"},
+  { program : "polybench-cpu-medley-floyd-warshall", compilation : true, value: "@polybench_dataset/polybench-cpu-medley-floyd-warshall/dataset4.json", name: "dataset4"},
+  { program : "polybench-cpu-medley-floyd-warshall", compilation : true, value: "@polybench_dataset/polybench-cpu-medley-floyd-warshall/dataset5.json", name: "dataset5"},
+
+  { program : "polybench-cpu-syrk", compilation : true, value: "@polybench_dataset/polybench-cpu-syrk/dataset1.json", name: "dataset1"},
+  { program : "polybench-cpu-syrk", compilation : true, value: "@polybench_dataset/polybench-cpu-syrk/dataset2.json", name: "dataset2"},
+  { program : "polybench-cpu-syrk", compilation : true, value: "@polybench_dataset/polybench-cpu-syrk/dataset3.json", name: "dataset3"},
+  { program : "polybench-cpu-syrk", compilation : true, value: "@polybench_dataset/polybench-cpu-syrk/dataset4.json", name: "dataset4"},
+  { program : "polybench-cpu-syrk", compilation : true, value: "@polybench_dataset/polybench-cpu-syrk/dataset5.json", name: "dataset5"},
+
+  { program : "polybench-cpu-2mm", compilation : true, value: "@polybench_dataset/polybench-cpu-2mm/dataset1.json", name: "dataset1"},
+  { program : "polybench-cpu-2mm", compilation : true, value: "@polybench_dataset/polybench-cpu-2mm/dataset2.json", name: "dataset2"},
+  { program : "polybench-cpu-2mm", compilation : true, value: "@polybench_dataset/polybench-cpu-2mm/dataset3.json", name: "dataset3"},
+  { program : "polybench-cpu-2mm", compilation : true, value: "@polybench_dataset/polybench-cpu-2mm/dataset4.json", name: "dataset4"},
+  { program : "polybench-cpu-2mm", compilation : true, value: "@polybench_dataset/polybench-cpu-2mm/dataset5.json", name: "dataset5"},
+
+  { program : "polybench-cpu-seidel-2d", compilation : true, value: "@polybench_dataset/polybench-cpu-seidel-2d/dataset1.json", name: "dataset1"},
+  { program : "polybench-cpu-seidel-2d", compilation : true, value: "@polybench_dataset/polybench-cpu-seidel-2d/dataset2.json", name: "dataset2"},
+  { program : "polybench-cpu-seidel-2d", compilation : true, value: "@polybench_dataset/polybench-cpu-seidel-2d/dataset3.json", name: "dataset3"},
+  { program : "polybench-cpu-seidel-2d", compilation : true, value: "@polybench_dataset/polybench-cpu-seidel-2d/dataset4.json", name: "dataset4"},
+  { program : "polybench-cpu-seidel-2d", compilation : true, value: "@polybench_dataset/polybench-cpu-seidel-2d/dataset5.json", name: "dataset5"},
+
+  { program : "polybench-cpu-gemver", compilation : true, value: "@polybench_dataset/polybench-cpu-gemver/dataset1.json", name: "dataset1"},
+  { program : "polybench-cpu-gemver", compilation : true, value: "@polybench_dataset/polybench-cpu-gemver/dataset2.json", name: "dataset2"},
+  { program : "polybench-cpu-gemver", compilation : true, value: "@polybench_dataset/polybench-cpu-gemver/dataset3.json", name: "dataset3"},
+  { program : "polybench-cpu-gemver", compilation : true, value: "@polybench_dataset/polybench-cpu-gemver/dataset4.json", name: "dataset4"},
+  { program : "polybench-cpu-gemver", compilation : true, value: "@polybench_dataset/polybench-cpu-gemver/dataset5.json", name: "dataset5"},
+]
+
+const inputs = [
+  { program : "cbench-automotive-susan", value: "--cmd_key=edges", name: "edges"},
+  { program : "cbench-automotive-susan", value: "--cmd_key=corners", name : "corners"},
+  { program : "cbench-automotive-susan", value: "--cmd_key=smoothing", name : "smoothing"},
+  { program : "cbench-bzip2", value: "--cmd_key=decode", name : "decode"},
+  { program : "cbench-bzip2", value: "--cmd_key=encode", name : "encode"},
+  { program : "cbench-security-rijndael", value: "--cmd_key=encode", name : "encode"},
+  { program : "cbench-security-rijndael", value: "--cmd_key=decode", name : "decode"}
+]
 
 
 const optimizations = [
@@ -135,46 +386,45 @@ const optimizations = [
   { reference_name : "OPT16" , value : "-O3 -falign-loops -fno-delete-null-pointer-checks -fno-gcse-lm -floop-interchange -fsched2-use-superblocks -fno-tree-pre -fno-tree-vectorize -funroll-all-loops -funsafe-loop-optimizations -fno-web" },
   { reference_name : "OPT17" , value : "-O3 -fno-gcse -floop-strip-mine -fno-move-loop-invariants -fno-predictive-commoning -ftracer" },
   { reference_name : "OPT18" , value : "-O3 -fno-inline-functions-called-once -fno-regmove -frename-registers -fno-tree-copyrename" },
-  { reference_name : "OPT19" , value : "-O3 -fno-inline-functions -fno-move-loop-invariants" },
+  { reference_name : "OPT19" , value : "-O3 -fno-inline-functions -fno-move-loop-invariants" }
 ]
 
 function get_directory_logs(){
   return process.env.directory_log ? process.env.directory_log : `${__dirname}/logs`
 }
 
-async function try_ck_run_program(program, input, count){
-  count = count || 0;
-  
-  try {
-    const { stdout } = await exec(`ck run program:${program} ${input ? input.value : ""}`, { maxBuffer : maxBuffer});
-    if (!stdout.match('Execution time')){
-      throw new Error(stdout);
-    }
-    return stdout;
-  } catch(e){
-    if (count <= 10){
-      return try_ck_run_program(program, input, ++count)
-    }
-
-    throw e;
-  }
+function get_regex(){
+  return skip_calibration ? `(\"execution_time\"\: )(.*),` : `("Normalized execution time"\: )([0-9]*\.[0-9]*)`;
 }
 
-async function run_program_with_optimization(program, optimization, input){
-  console.log(`Running program ${input && input.name ? input.name : program} with optimizations ${optimization.reference_name} for ${total_execution} times`)
-  let directory = get_directory_logs().concat(`/${program}/${input && input.name ? input.name.concat("/") : ""}${optimization.reference_name}`);
+function log(program, optimization, input, dataset, directory_base){
+  console.log(`Running program ${program} with:`)
+  if (input && input.name) {
+    console.log(`Input name: ${input.name}`)
+  }
+  if (dataset){
+    console.log(`Dataset: ${dataset.name} / ${dataset.value}`)
+  }
+  console.log(`With optimization ${optimization.reference_name} for ${total_execution} times\n`);
+}
+
+async function run_program_with_optimization(program, optimization, input, dataset, directory_base){
+  log(program, optimization, input, dataset, directory_base);
+
+  let directory = directory_base.concat(`/${optimization.reference_name}`);
   await exec(`mkdir ${directory}`);
-  await exec(`ck compile program:${program} --flags="${optimization.value}" --compiler_tags=milepost`, { maxBuffer : maxBuffer});
-  await exec(`ck run program:${program} ${input ? input.value : ""}`, { maxBuffer : maxBuffer}); //warm up cache
+  const result_compilation = await exec(`ck compile program:${program} ${dataset && dataset.compilation ? dataset.value : ""} --flags="${optimization.value}" --compiler_tags=milepost`, { maxBuffer : maxBuffer});
+  fs.writeFileSync(directory.concat('/compilation.txt'), result_compilation.stdout);
+  await exec(`ck run program:${program} ${input ? input.value : ""} ${dataset && !dataset.compilation ? dataset.value : ""} ${skip_calibration ? "--skip_calibration" : ""}   `, { maxBuffer : maxBuffer}); //warm up cache
   let executions_time = [];
   for (let execution = 0; execution < total_execution; execution++) {
-    //const stdout  = await try_ck_run_program(program, input);
-    const { stdout } = await exec(`ck run program:${program} ${input ? input.value : ""}`, { maxBuffer : maxBuffer});
+    const { stdout } = await exec(`ck run program:${program} ${input ? input.value : ""} ${dataset && !dataset.compilation ? dataset.value : ""} ${skip_calibration ? "--skip_calibration" : ""} --skip_output_validation`, { maxBuffer : maxBuffer});
     fs.writeFileSync(directory.concat(`/execution${new Number(execution + 1).toString().padStart(2, '0')}.txt`), stdout);
-    if (!stdout.match('Normalized execution time')){
+    if (!stdout.match(get_regex())){
       continue;
     }
-    let execution_time = stdout.match('(Normalized execution time\: )([0-9]*\.[0-9]*)')[2];
+
+    let execution_time = stdout.match(get_regex())[2];
     executions_time.push(+execution_time);
   }
 
@@ -185,10 +435,14 @@ async function run_program_with_optimization(program, optimization, input){
   `standard deviation: ${stats.stdev(executions_time)}\n` +
   `sample standard deviation: ${stats.sampleStdev(executions_time)}`
   
-  console.log(`summary ${program} program:\n${summary}`);
+  console.log(`summary ${program} program:\n${summary}\n`);
+  console.log('---------------------------------------------------------------------------\n\n')
 
   fs.writeFileSync(directory.concat('/summary.txt'), summary);
-  return stats.mean(executions_time);
+  return { 
+    mean: stats.mean(executions_time),
+    standard_deviation : stats.stdev(executions_time)
+  };
 }
 
 async function run_program(program){
@@ -202,28 +456,64 @@ async function run_program(program){
         await exec(`mkdir ${directory_input}`);
       }
 
-      let best_optimization = {name : 'None', result: Infinity};
+      
+      const program_datasets = datasets.filter(e => e.program === program && e.input === input.name);
+      for (const dataset of program_datasets){
+        let best_optimization = {name : 'None', result: { mean : Infinity, standard_deviation: 0}};
+        let directory_dataset = directory_input.concat(`/${dataset.name}`);
+        await exec(`mkdir ${directory_dataset}`);
+        let all_results = [];
+        for (let optimization of optimizations){
+          let result_optimization = await run_program_with_optimization(program, optimization, input, dataset, directory_dataset);
+          all_results.push({name: optimization.reference_name, result: result_optimization});
+          if (result_optimization.mean < best_optimization.result.mean){
+            best_optimization = {name : optimization.reference_name, result : result_optimization}
+          }
+        }
+  
+        let all_results_except_best = all_results.filter(e => e.name != best_optimization.name);
+        let ties = all_results_except_best.filter(e => e.result.mean - e.result.standard_deviation <= 
+                    best_optimization.result.mean + best_optimization.result.standard_deviation);
+
+        let result_text = `The best optimization group is ${best_optimization.name} with ${best_optimization.result.mean} sec`;
+        if (ties.length){
+          result_text += `\nTecnical tie: ${ties.map(e => e.name).join()} with ${ties.map(e => e.result.mean).join()} respectively`
+        }
+        
+        fs.writeFileSync(directory_dataset.concat('/best_op.txt'), result_text); 
+      }
+
+    }  
+  } else {
+    let directory_base = get_directory_logs().concat(`/${program}`);
+
+    const program_datasets = datasets.filter(e => e.program === program);
+    for (const dataset of program_datasets){
+      let best_optimization = {name : 'None', result: { mean : Infinity, standard_deviation: 0}};
+      let directory_dataset = directory_base.concat(`/${dataset.name}`);
+      let all_results = [];
+      await exec(`mkdir ${directory_dataset}`);
       for (let optimization of optimizations){
-        let result_optimization = await run_program_with_optimization(program, optimization, input);
-        if (result_optimization < best_optimization.result){
+        let result_optimization = await run_program_with_optimization(program, optimization, undefined, dataset, directory_dataset);
+        all_results.push({name: optimization.reference_name, result: result_optimization});
+        if (result_optimization.mean < best_optimization.result.mean){
           best_optimization = {name : optimization.reference_name, result : result_optimization}
         }
       }
 
-      fs.writeFileSync(directory_input.concat('/best_op.txt'), 
-        `The best optimization is ${best_optimization.name} with ${best_optimization.result} sec`);
-    }  
-  } else {
-    let best_optimization = {name : 'None', result: Infinity};
-    for (let optimization of optimizations){
-      let result_optimization = await run_program_with_optimization(program, optimization);
-      if (result_optimization < best_optimization.result){
-        best_optimization = {name : optimization.reference_name, result : result_optimization}
-      }
-    }
+      let all_results_except_best = all_results.filter(e => e.name != best_optimization.name);
+      let ties = all_results_except_best.filter(e => e.result.mean - e.result.standard_deviation <= 
+                    best_optimization.result.mean + best_optimization.result.standard_deviation);
 
-    fs.writeFileSync(get_directory_logs().concat(`/${program}`).concat('/best_op.txt'), 
-        `The best optimization is ${best_optimization.name} with ${best_optimization.result} sec`);
+      let result_text = `The best optimization group is ${best_optimization.name} with ${best_optimization.result.mean} sec`;
+      if (ties.length){
+        result_text += `\nTecnical tie: ${ties.map(e => e.name).join()} with ${ties.map(e => e.result.mean).join()} respectively`
+      }
+      
+      fs.writeFileSync(directory_dataset.concat('/best_op.txt'), result_text); 
+     }
+
+    
   }
 
 }
@@ -241,3 +531,5 @@ async function run(){
 }
 
 run();
+
+
