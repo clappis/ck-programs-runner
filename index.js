@@ -65,6 +65,12 @@ const datasets = [
   { program : "cbench-automotive-bitcount", value: "--dataset_uoa=number-0004", name: "dataset4"},
   { program : "cbench-automotive-bitcount", value: "--dataset_uoa=number-0005", name: "dataset5"}, 
 
+  { program : "cbench-automotive-qsort1", value: "--dataset_uoa=cdataset-qsort-0001", name: "dataset1"},
+  { program : "cbench-automotive-qsort1", value: "--dataset_uoa=cdataset-qsort-0002", name: "dataset2"},
+  { program : "cbench-automotive-qsort1", value: "--dataset_uoa=cdataset-qsort-0003", name: "dataset3"},
+  { program : "cbench-automotive-qsort1", value: "--dataset_uoa=cdataset-qsort-0004", name: "dataset4"},
+  { program : "cbench-automotive-qsort1", value: "--dataset_uoa=cdataset-qsort-0005", name: "dataset5"},
+
   { program : "cbench-automotive-susan", value: "--dataset_uoa=image-pgm-0001", name: "dataset1" , input: "edges"},
   { program : "cbench-automotive-susan", value: "--dataset_uoa=image-pgm-0002", name: "dataset2", input: "edges"},
   { program : "cbench-automotive-susan", value: "--dataset_uoa=image-pgm-0003", name: "dataset3" , input: "edges"},
