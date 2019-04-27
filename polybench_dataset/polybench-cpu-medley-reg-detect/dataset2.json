@@ -1,6 +1,6 @@
 { "compiler_vars": 
-   {"NITER":10000,
-    "LENGTH":64,
+   {"NITER":100,
+    "LENGTH":50,
     "MAXGRID":6
   }
  }

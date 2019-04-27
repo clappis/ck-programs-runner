@@ -1,5 +1,5 @@
 { "compiler_vars": 
-   {"N":5000,
-    "TSTEPS": 100
+   {"N":500,
+    "TSTEPS": 2
    }
 }

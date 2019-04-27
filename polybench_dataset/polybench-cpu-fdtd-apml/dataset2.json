@@ -1,7 +1,7 @@
 { "compiler_vars": 
   { 
-   "CZ":32,
-   "CYM":32,
-   "CXM":32
+   "CZ":64,
+   "CYM":64,
+   "CXM":64
  }
 }

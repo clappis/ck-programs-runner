@@ -1,6 +1,6 @@
 { "compiler_vars": 
-  {"TSTEPS":1000,
-   "LENGTH":250
+  {"TSTEPS":10000,
+   "LENGTH":500
  }
 }
 
