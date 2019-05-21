@@ -50,7 +50,7 @@ const programs = [
 "polybench-cpu-syrk",
 "polybench-cpu-2mm",
 "polybench-cpu-seidel-2d",
-"polybench-cpu-gemver",  
+"polybench-cpu-gemver",   
 "bitbench-drop3",
 "bitbench-five11",
 "bitbench-uudecode",
@@ -437,6 +437,10 @@ function get_regex(){
   return skip_calibration ? `(\"execution_time\"\: )(.*),` : `("Normalized execution time"\: )([0-9]*\.[0-9]*)`;
 }
 
+function get_regex2(){
+  return `(Execution time\: )([0-9]*\.[0-9]*)`;
+}
+
 function log(program, optimization, input, dataset, directory_base){
   console.log(`Running program ${program} with:`)
   if (input && input.name) {
@@ -460,11 +464,15 @@ async function run_program_with_optimization(program, optimization, input, datas
   for (let execution = 0; execution < total_execution; execution++) {
     const { stdout } = await exec(`ck run program:${program} ${input ? input.value : ""} ${dataset && dataset.value &&  !dataset.compilation ? dataset.value : ""} ${skip_calibration ? "--skip_calibration" : ""} --skip_output_validation`, { maxBuffer : maxBuffer});
     fs.writeFileSync(directory.concat(`/execution${new Number(execution + 1).toString().padStart(2, '0')}.txt`), stdout);
-    if (!stdout.match(get_regex())){
+    let execution_time = undefined;
+    if (stdout.match(get_regex())){
+      execution_time = stdout.match(get_regex())[2];
+    } else if (stdout.match(get_regex2())){
+      execution_time = stdout.match(get_regex2())[2];
+    } else {
       continue;
     }
-
-    let execution_time = stdout.match(get_regex())[2];
+    
     executions_time.push(+execution_time);
   }
 
@@ -519,6 +527,9 @@ async function run_program(program){
         if (ties.length){
           result_text += `\nTecnical tie: ${ties.map(e => e.name).join()} with ${ties.map(e => e.result.mean).join()} respectively`
         }
+
+        result_text += "\nHot encode format:\n" 
+        result_text += optimizations.map(o => + ties.concat(best_optimization).map(e => e.name).includes(o.reference_name)).toString().replace(/,/g,';')
         
         fs.writeFileSync(directory_dataset.concat('/best_op.txt'), result_text); 
       }
@@ -549,6 +560,9 @@ async function run_program(program){
       if (ties.length){
         result_text += `\nTecnical tie: ${ties.map(e => e.name).join()} with ${ties.map(e => e.result.mean).join()} respectively`
       }
+
+      result_text += "\nHot encode format:\n" 
+      result_text += optimizations.map(o => + ties.concat(best_optimization).map(e => e.name).includes(o.reference_name)).toString().replace(/,/g,';')
       
       fs.writeFileSync(directory_dataset.concat('/best_op.txt'), result_text); 
      }
