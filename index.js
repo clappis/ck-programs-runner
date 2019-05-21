@@ -51,6 +51,36 @@ const programs = [
 "polybench-cpu-2mm",
 "polybench-cpu-seidel-2d",
 "polybench-cpu-gemver",  
+"bitbench-drop3",
+"bitbench-five11",
+"bitbench-uudecode",
+"bitbench-uuencode",
+"coyote-alma",
+"coyote-huff",
+"coyote-lp",
+"dhrystone-dry",
+"dhrystone-fldry",
+"doe_proxyapps_miniamr",
+"doe_proxyapps_minigmg",
+"doe_proxyapps_pathfinder",
+"doe_proxyapps_rsbench",
+"doe_proxyapps_simple_moc",
+"doe_proxyapps_xsbench",
+"fhourstones",
+"freebench-analyzer",
+"freebench-distray",
+"freebench-fourinarow",
+"freebench-mason",
+"freebench-neural",
+"freebench-pcompress2",
+"freebench-pifft",
+"game-fannkuch",
+"game-n-body",
+"game-nsieve-bits",
+"game-partialsums",
+"game-puzzle",
+"game-recursive",
+"game-spectral-norm",
 ] 
 
 const total_execution = 10;
@@ -333,6 +363,37 @@ const datasets = [
   { program : "polybench-cpu-gemver", compilation : true, value: "@polybench_dataset/polybench-cpu-gemver/dataset2.json", name: "dataset2"},
   { program : "polybench-cpu-gemver", compilation : true, value: "@polybench_dataset/polybench-cpu-gemver/dataset3.json", name: "dataset3"},
   { program : "polybench-cpu-gemver", compilation : true, value: "@polybench_dataset/polybench-cpu-gemver/dataset4.json", name: "dataset4"},
+
+  { program : "bitbench-drop3", name: "dataset1"},
+  { program : "bitbench-five11", name: "dataset1"},
+  { program : "bitbench-uudecode", name: "dataset1"},
+  { program : "bitbench-uuencode", name: "dataset1"},
+  { program : "coyote-alma", name: "dataset1"},
+  { program : "coyote-huff", name: "dataset1"},
+  { program : "coyote-lp", name: "dataset1"},
+  { program : "dhrystone-dry", name: "dataset1"},
+  { program : "dhrystone-fldry", name: "dataset1"},
+  { program : "doe_proxyapps_miniamr", name: "dataset1"},
+  { program : "doe_proxyapps_minigmg", name: "dataset1"},
+  { program : "doe_proxyapps_pathfinder", name: "dataset1"},
+  { program : "doe_proxyapps_rsbench", name: "dataset1"},
+  { program : "doe_proxyapps_simple_moc", name: "dataset1"},
+  { program : "doe_proxyapps_xsbench", name: "dataset1"},
+  { program : "fhourstones", name: "dataset1"},
+  { program : "freebench-analyzer", name: "dataset1"},
+  { program : "freebench-distray", name: "dataset1"},
+  { program : "freebench-fourinarow", name: "dataset1"},
+  { program : "freebench-mason", name: "dataset1"},
+  { program : "freebench-neural", name: "dataset1"},
+  { program : "freebench-pcompress2", name: "dataset1"},
+  { program : "freebench-pifft", name: "dataset1"},
+  { program : "game-fannkuch", name: "dataset1"},
+  { program : "game-n-body", name: "dataset1"},
+  { program : "game-nsieve-bits", name: "dataset1"},
+  { program : "game-partialsums", name: "dataset1"},
+  { program : "game-puzzle", name: "dataset1"},
+  { program : "game-recursive", name: "dataset1"},
+  { program : "game-spectral-norm", name: "dataset1"},
 ]
 
 const inputs = [
@@ -381,7 +442,7 @@ function log(program, optimization, input, dataset, directory_base){
   if (input && input.name) {
     console.log(`Input name: ${input.name}`)
   }
-  if (dataset){
+  if (dataset && dataset.value){
     console.log(`Dataset: ${dataset.name} / ${dataset.value}`)
   }
   console.log(`With optimization ${optimization.reference_name} for ${total_execution} times\n`);
@@ -394,10 +455,10 @@ async function run_program_with_optimization(program, optimization, input, datas
   await exec(`mkdir ${directory}`);
   const result_compilation = await exec(`ck compile program:${program} ${dataset && dataset.compilation ? dataset.value : ""} --flags="${optimization.value}" --compiler_tags=milepost`, { maxBuffer : maxBuffer});
   fs.writeFileSync(directory.concat('/compilation.txt'), result_compilation.stdout);
-  await exec(`ck run program:${program} ${input ? input.value : ""} ${dataset && !dataset.compilation ? dataset.value : ""} ${skip_calibration ? "--skip_calibration" : ""}   `, { maxBuffer : maxBuffer}); //warm up cache
+  await exec(`ck run program:${program} ${input ? input.value : ""} ${dataset && dataset.value && !dataset.compilation ? dataset.value : ""} ${skip_calibration ? "--skip_calibration" : ""}   `, { maxBuffer : maxBuffer}); //warm up cache
   let executions_time = [];
   for (let execution = 0; execution < total_execution; execution++) {
-    const { stdout } = await exec(`ck run program:${program} ${input ? input.value : ""} ${dataset && !dataset.compilation ? dataset.value : ""} ${skip_calibration ? "--skip_calibration" : ""} --skip_output_validation`, { maxBuffer : maxBuffer});
+    const { stdout } = await exec(`ck run program:${program} ${input ? input.value : ""} ${dataset && dataset.value &&  !dataset.compilation ? dataset.value : ""} ${skip_calibration ? "--skip_calibration" : ""} --skip_output_validation`, { maxBuffer : maxBuffer});
     fs.writeFileSync(directory.concat(`/execution${new Number(execution + 1).toString().padStart(2, '0')}.txt`), stdout);
     if (!stdout.match(get_regex())){
       continue;
