@@ -66,7 +66,6 @@ const programs = [
 "doe_proxyapps_rsbench",
 "doe_proxyapps_simple_moc",
 "doe_proxyapps_xsbench",
-"fhourstones",
 "freebench-analyzer",
 "freebench-distray",
 "freebench-fourinarow",
