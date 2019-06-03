@@ -137,8 +137,8 @@ const programs = [
 "misc-richards"
 ] 
 
-const total_execution = 10;
-const maxBuffer = 1024000;
+const total_execution = 30;
+const maxBuffer = Infinity;
 
 const skip_calibration = true;
 
