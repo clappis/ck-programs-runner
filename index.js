@@ -1490,6 +1490,11 @@ const datasets = [
   { program : "polybench-cpu-dynprog", compilation : true, value: "@polybench_dataset/polybench-cpu-dynprog/dataset3.json", name: "dataset3"},
   { program : "polybench-cpu-dynprog", compilation : true, value: "@polybench_dataset/polybench-cpu-dynprog/dataset4.json", name: "dataset4"},
 
+  { program : "polybench-cpu-durbin", compilation : true, value: "@polybench_dataset/polybench-cpu-durbin/dataset1.json", name: "dataset1"},
+  { program : "polybench-cpu-durbin", compilation : true, value: "@polybench_dataset/polybench-cpu-durbin/dataset2.json", name: "dataset2"},
+  { program : "polybench-cpu-durbin", compilation : true, value: "@polybench_dataset/polybench-cpu-durbin/dataset3.json", name: "dataset3"},
+  { program : "polybench-cpu-durbin", compilation : true, value: "@polybench_dataset/polybench-cpu-durbin/dataset4.json", name: "dataset4"},
+
   { program : "polybench-cpu-medley-reg-detect", compilation : true, value: "@polybench_dataset/polybench-cpu-medley-reg-detect/dataset1.json", name: "dataset1"},
   { program : "polybench-cpu-medley-reg-detect", compilation : true, value: "@polybench_dataset/polybench-cpu-medley-reg-detect/dataset2.json", name: "dataset2"},
   { program : "polybench-cpu-medley-reg-detect", compilation : true, value: "@polybench_dataset/polybench-cpu-medley-reg-detect/dataset3.json", name: "dataset3"},
